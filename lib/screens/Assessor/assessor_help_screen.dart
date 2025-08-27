@@ -3,6 +3,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../theme/app_theme.dart';
 import 'assessor_dashboard_screen.dart';
 import '../guides_screen.dart';
+import 'assessor_competencies_screen.dart';
+import 'assessor_assessment_list_screen.dart';
+import '../glossary_screen.dart';
 
 class AssessorHelpScreen extends StatefulWidget {
   const AssessorHelpScreen({super.key});
@@ -12,44 +15,23 @@ class AssessorHelpScreen extends StatefulWidget {
 }
 
 class _AssessorHelpScreenState extends State<AssessorHelpScreen> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _subjectController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  int _selectedIndex = 2; // Assess, Guides, Help
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _subjectController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
+  int _selectedIndex = 4; // Dashboard, Assess, Guides, Competencies, Help
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
         child: Column(
           children: [
             _buildHeader(),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Assessor tips', style: AppTheme.heading2),
-                    const SizedBox(height: 8),
-                    _buildHowToList(),
-                    const SizedBox(height: 24),
-                    Text('Report an issue', style: AppTheme.heading2),
-                    const SizedBox(height: 12),
-                    _buildReportForm(),
-                    const SizedBox(height: 12),
-                    _buildAlternateContact(),
+                    _buildHelpOptions(),
+                    const Spacer(),
                   ],
                 ),
               ),
@@ -70,11 +52,23 @@ class _AssessorHelpScreenState extends State<AssessorHelpScreen> {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => const GuidesScreen(useAssessorNav: true)),
+                MaterialPageRoute(builder: (_) => const AssessorAssessmentListScreen()),
               );
               break;
             case 2:
-              setState(() => _selectedIndex = 2);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const GuidesScreen(useAssessorNav: true)),
+              );
+              break;
+            case 3:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const AssessorCompetenciesScreen()),
+              );
+              break;
+            case 4:
+              setState(() => _selectedIndex = 4);
               break;
           }
         },
@@ -84,8 +78,9 @@ class _AssessorHelpScreenState extends State<AssessorHelpScreen> {
 
   Widget _buildHeader() {
     return Container(
+      width: double.infinity,
       decoration: const BoxDecoration(
-        gradient: AppTheme.mainGradient,
+        color: Color(0xFF0D2A4C),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
@@ -94,188 +89,476 @@ class _AssessorHelpScreenState extends State<AssessorHelpScreen> {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          children: const [
-            SizedBox(height: 8),
-            Icon(Icons.help, color: AppTheme.highlightColor, size: 32),
-            SizedBox(height: 8),
-            Text(
+          children: [
+            // Top row with profile icon
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    color: Color(0xFF0D2A4C),
+                    size: 24,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            // Question mark icon
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: const Color(0xFFDFAE26),
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: const Icon(
+                Icons.help,
+                color: Colors.white,
+                size: 48,
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Help text
+            const Text(
               'Help',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 28,
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              'Guidance for assessors and a way to report issues.',
-              style: TextStyle(color: Colors.white70),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 12),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHowToList() {
-    final List<_Tip> tips = const [
-      _Tip(
-        title: 'Find learners ready for WPA',
-        description: 'On the Assess tab, use the Competencies list to see how many learners are ready.',
-        icon: Icons.group,
-      ),
-      _Tip(
-        title: 'View learners by status',
-        description: 'Switch to Learners to quickly see who is due for assessments.',
-        icon: Icons.people_outline,
-      ),
-      _Tip(
-        title: 'Open related guides',
-        description: 'From Guides, review key content before or during an assessment.',
-        icon: Icons.menu_book,
-      ),
-    ];
-
-    return Column(
-      children: tips
-          .map((tip) => Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(16),
-                decoration: AppTheme.cardDecoration,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryGradientStart,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(tip.icon, color: Colors.white, size: 20),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(tip.title, style: AppTheme.heading3),
-                          const SizedBox(height: 6),
-                          Text(tip.description, style: AppTheme.caption),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ))
-          .toList(),
-    );
-  }
-
-  Widget _buildReportForm() {
+  Widget _buildHelpOptions() {
     return Column(
       children: [
-        TextField(
-          controller: _nameController,
-          decoration: AppTheme.inputDecoration.copyWith(hintText: 'Your name (optional)'),
+        _buildHelpOption(
+          icon: Icons.phone_android,
+          title: 'How to use',
+          subtitle: 'Logit LMS',
+          subtitleColor: const Color(0xFFDFAE26),
+          onTap: () => _showHowToUse(),
         ),
-        const SizedBox(height: 12),
-        TextField(
-          controller: _emailController,
-          keyboardType: TextInputType.emailAddress,
-          decoration: AppTheme.inputDecoration.copyWith(hintText: 'Your email (optional)'),
+        const SizedBox(height: 16),
+        _buildHelpOption(
+          icon: Icons.description,
+          title: 'Glossary',
+          subtitle: '',
+          subtitleColor: Colors.white,
+          onTap: () => _showGlossary(),
         ),
-        const SizedBox(height: 12),
-        TextField(
-          controller: _subjectController,
-          decoration: AppTheme.inputDecoration.copyWith(hintText: 'Subject'),
-        ),
-        const SizedBox(height: 12),
-        TextField(
-          controller: _descriptionController,
-          minLines: 4,
-          maxLines: 8,
-          decoration: AppTheme.inputDecoration.copyWith(hintText: 'Describe the issue or question...'),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            style: AppTheme.primaryButtonStyle,
-            onPressed: _submitReport,
-            child: const Text('Submit'),
-          ),
+        const SizedBox(height: 16),
+        _buildHelpOption(
+          icon: Icons.bug_report,
+          title: 'Report a problem',
+          subtitle: '',
+          subtitleColor: Colors.white,
+          onTap: () => _showReportProblem(),
         ),
       ],
     );
   }
 
-  Widget _buildAlternateContact() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Prefer email?', style: AppTheme.heading3),
-        const SizedBox(height: 8),
-        Row(
+  Widget _buildHelpOption({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color subtitleColor,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: const Color(0xFF0D2A4C),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
           children: [
-            const Icon(Icons.email, color: AppTheme.primaryGradientStart, size: 18),
-            const SizedBox(width: 8),
-            GestureDetector(
-              onTap: _openSupportEmail,
-              child: Text(
-                'support@logitlms.com',
-                style: AppTheme.bodyText.copyWith(
-                  color: AppTheme.primaryGradientStart,
-                  decoration: TextDecoration.underline,
+            // Icon with yellow overlay
+            Stack(
+              children: [
+                Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 32,
                 ),
+                if (icon == Icons.phone_android)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFDFAE26),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.info,
+                        color: Colors.white,
+                        size: 12,
+                      ),
+                    ),
+                  ),
+                if (icon == Icons.description)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFDFAE26),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 12,
+                      ),
+                    ),
+                  ),
+                if (icon == Icons.bug_report)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFDFAE26),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.error,
+                        color: Colors.white,
+                        size: 12,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(width: 16),
+            // Text content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (subtitle.isNotEmpty)
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        color: subtitleColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                ],
               ),
             ),
+            // Arrow icon
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+              size: 20,
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 
-  Future<void> _submitReport() async {
-    final String subject = _subjectController.text.trim().isEmpty
-        ? 'Assessor support request'
-        : _subjectController.text.trim();
-    final String name = _nameController.text.trim();
-    final String email = _emailController.text.trim();
-    final String description = _descriptionController.text.trim();
-
-    if (description.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please describe the issue.')),
-      );
-      return;
-    }
-
-    final String body = Uri.encodeComponent([
-      if (name.isNotEmpty) 'Name: $name',
-      if (email.isNotEmpty) 'Email: $email',
-      'Description:',
-      description,
-    ].join('\n'));
-
-    final Uri emailUri = Uri(
-      scheme: 'mailto',
-      path: 'support@logitlms.com',
-      query: 'subject=${Uri.encodeComponent(subject)}&body=$body',
+  void _showHowToUse() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildHowToUseModal(),
     );
+  }
 
-    await _tryLaunch(emailUri);
+  void _showGlossary() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const GlossaryScreen(),
+      ),
+    );
+  }
+
+  void _showReportProblem() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildReportProblemModal(),
+    );
+  }
+
+  Widget _buildHowToUseModal() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.8,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        children: [
+          // Handle bar
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'How to use Logit LMS',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0D2A4C),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildInstructionItem(
+                  '1. Navigate using the bottom bar',
+                  'Use the icons at the bottom to switch between different sections of the app.',
+                  Icons.space_bar,
+                ),
+                _buildInstructionItem(
+                  '2. Start learning',
+                  'Go to Competencies to begin your learning journey.',
+                  Icons.school,
+                ),
+                _buildInstructionItem(
+                  '3. Review guides',
+                  'Access helpful guides in the Guides section.',
+                  Icons.menu_book,
+                ),
+                _buildInstructionItem(
+                  '4. Track progress',
+                  'Check your results and progress in the Results tab.',
+                  Icons.assessment,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReportProblemModal() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.8,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Report a Problem',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0D2A4C),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'If you\'re experiencing issues with the app, please contact our support team:',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 20),
+                _buildContactOption(
+                  Icons.email,
+                  'Email Support',
+                  'support@logitlms.com',
+                  () => _openSupportEmail(),
+                ),
+                const SizedBox(height: 16),
+                _buildContactOption(
+                  Icons.phone,
+                  'Phone Support',
+                  '+1 (555) 123-4567',
+                  () => _openPhoneSupport(),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInstructionItem(String title, String description, IconData icon) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8F9FA),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: const Color(0xFF0D2A4C),
+            size: 24,
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Color(0xFF0D2A4C),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactOption(IconData icon, String title, String contact, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF8F9FA),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: const Color(0xFF0D2A4C),
+              size: 24,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Color(0xFF0D2A4C),
+                    ),
+                  ),
+                  Text(
+                    contact,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Color(0xFF0D2A4C),
+              size: 16,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _openSupportEmail() async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: 'support@logitlms.com',
-      query: 'subject=${Uri.encodeComponent('Logit LMS assessor support')}',
+      query: 'subject=${Uri.encodeComponent('Logit LMS Support Request')}',
     );
     await _tryLaunch(emailUri);
+  }
+
+  Future<void> _openPhoneSupport() async {
+    final Uri phoneUri = Uri(
+      scheme: 'tel',
+      path: '+15551234567',
+    );
+    await _tryLaunch(phoneUri);
   }
 
   Future<void> _tryLaunch(Uri uri) async {
@@ -285,19 +568,14 @@ class _AssessorHelpScreenState extends State<AssessorHelpScreen> {
       }
     } catch (_) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not open email app. Please email support@logitlms.com'),
+        SnackBar(
+          content: Text(
+            'Could not open external app. Please contact support manually.',
+          ),
         ),
       );
     }
   }
-}
-
-class _Tip {
-  final String title;
-  final String description;
-  final IconData icon;
-  const _Tip({required this.title, required this.description, required this.icon});
 }
 
 class _AssessorBottomBar extends StatelessWidget {
@@ -324,9 +602,11 @@ class _AssessorBottomBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(0, Icons.edit, 'Assess'),
-            _buildNavItem(1, Icons.menu_book, 'Guides'),
-            _buildNavItem(2, Icons.help, 'Help'),
+            _buildNavItem(0, Icons.lightbulb, 'Dashboard'),
+            _buildNavItem(1, Icons.edit, 'Assess'),
+            _buildNavItem(2, Icons.menu_book, 'Guides'),
+            _buildNavItem(3, Icons.my_location, 'Competencies'),
+            _buildNavItem(4, Icons.help, 'Help'),
           ],
         ),
       ),
@@ -338,7 +618,7 @@ class _AssessorBottomBar extends StatelessWidget {
     return GestureDetector(
       onTap: () => onItemTapped(index),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white.withOpacity(0.2) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
@@ -349,14 +629,14 @@ class _AssessorBottomBar extends StatelessWidget {
             Icon(
               icon,
               color: isSelected ? AppTheme.highlightColor : Colors.white,
-              size: 24,
+              size: 20,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               label,
               style: TextStyle(
                 color: isSelected ? AppTheme.highlightColor : Colors.white70,
-                fontSize: 10,
+                fontSize: 8,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),

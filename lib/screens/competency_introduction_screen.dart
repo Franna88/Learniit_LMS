@@ -124,9 +124,12 @@ class _CompetencyIntroductionScreenState extends State<CompetencyIntroductionScr
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Icon(Icons.menu, color: Colors.white),
-                Icon(Icons.person, color: Colors.white),
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                const Icon(Icons.person, color: Colors.white),
               ],
             ),
             const SizedBox(height: 6),

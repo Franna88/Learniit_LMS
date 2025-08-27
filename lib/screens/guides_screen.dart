@@ -6,6 +6,7 @@ import 'profile_screen.dart';
 import 'guide_detail_screen.dart';
 import 'Assessor/assessor_dashboard_screen.dart';
 import 'Assessor/assessor_help_screen.dart';
+import 'Assessor/assessor_competencies_screen.dart';
 
 class GuidesScreen extends StatefulWidget {
   final bool useAssessorNav;
@@ -19,7 +20,7 @@ class GuidesScreen extends StatefulWidget {
 class _GuidesScreenState extends State<GuidesScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-  int _assessorSelectedIndex = 1; // 0: Assess, 1: Guides, 2: Help
+  int _assessorSelectedIndex = 2; // 0: Dashboard, 1: Assess, 2: Guides, 3: Competencies, 4: Help
 
   // Sample guide data - in a real app, this would come from an API or database
   final List<Map<String, dynamic>> _allGuides = [
@@ -323,14 +324,26 @@ class _GuidesScreenState extends State<GuidesScreen> {
                     );
                     break;
                   case 1:
-                    setState(() => _assessorSelectedIndex = 1);
-                    break;
-                  case 2:
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (_) => const AssessorHelpScreen()),
+                      MaterialPageRoute(builder: (_) => const AssessorDashboardScreen()),
                     );
                     break;
+                              case 2:
+              setState(() => _assessorSelectedIndex = 2);
+              break;
+            case 3:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const AssessorCompetenciesScreen()),
+              );
+              break;
+            case 4:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const AssessorHelpScreen()),
+              );
+              break;
                 }
               },
             )
@@ -366,9 +379,11 @@ class _AssessorBottomBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(0, Icons.edit, 'Assess'),
-            _buildNavItem(1, Icons.menu_book, 'Guides'),
-            _buildNavItem(2, Icons.help, 'Help'),
+            _buildNavItem(0, Icons.lightbulb, 'Dashboard'),
+            _buildNavItem(1, Icons.edit, 'Assess'),
+            _buildNavItem(2, Icons.menu_book, 'Guides'),
+            _buildNavItem(3, Icons.my_location, 'Competencies'),
+            _buildNavItem(4, Icons.help, 'Help'),
           ],
         ),
       ),
@@ -380,7 +395,7 @@ class _AssessorBottomBar extends StatelessWidget {
     return GestureDetector(
       onTap: () => onItemTapped(index),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white.withOpacity(0.2) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
@@ -391,14 +406,14 @@ class _AssessorBottomBar extends StatelessWidget {
             Icon(
               icon,
               color: isSelected ? AppTheme.highlightColor : Colors.white,
-              size: 24,
+              size: 20,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               label,
               style: TextStyle(
                 color: isSelected ? AppTheme.highlightColor : Colors.white70,
-                fontSize: 10,
+                fontSize: 8,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),

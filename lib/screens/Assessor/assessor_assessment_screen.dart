@@ -109,9 +109,12 @@ class _AssessorAssessmentScreenState extends State<AssessorAssessmentScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Icon(Icons.keyboard_backspace, color: Colors.white, size: 22),
-                    Icon(Icons.more_horiz, color: Colors.white, size: 22),
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.keyboard_backspace, color: Colors.white, size: 22),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    const Icon(Icons.more_horiz, color: Colors.white, size: 22),
                   ],
                 ),
                 const SizedBox(height: 10),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../login_screen.dart';
 import '../signup_screen.dart';
+import '../../theme/app_theme.dart';
 
 class ParallaxOnboardingScreen extends StatefulWidget {
   const ParallaxOnboardingScreen({super.key});
@@ -13,7 +14,7 @@ class _ParallaxOnboardingScreenState extends State<ParallaxOnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
   double _currentPageValue = 0.0;
-  final int _totalPages = 7;
+  final int _totalPages = 6;
 
   @override
   void initState() {
@@ -61,7 +62,7 @@ class _ParallaxOnboardingScreenState extends State<ParallaxOnboardingScreen> {
 
   Widget _buildParallaxBackground() {
     // Calculate the offset for parallax effect using the continuous page value
-    // We want to move from left edge to right edge across all 7 screens
+    // We want to move from left edge to right edge across all 6 screens
     // So the total movement should be limited to the extra width we have
     double maxOffset = 0.5; // Maximum offset as a fraction of screen width
     double parallaxOffset = (_currentPageValue / (_totalPages - 1)) * maxOffset;
@@ -133,15 +134,37 @@ class _ParallaxOnboardingScreenState extends State<ParallaxOnboardingScreen> {
               ),
               const SizedBox(height: 40),
               // Main title
-              Text(
-                'Stay safe. Stay sharp.\nStay certified.',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  height: 1.3,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      height: 1.3,
+                    ),
+                    children: [
+                      const TextSpan(text: 'Stay '),
+                      TextSpan(
+                        text: 'safe',
+                        style: TextStyle(color: AppTheme.highlightColor),
+                      ),
+                      const TextSpan(text: '. Stay '),
+                      TextSpan(
+                        text: 'sharp',
+                        style: TextStyle(color: AppTheme.highlightColor),
+                      ),
+                      const TextSpan(text: '. Stay '),
+                      TextSpan(
+                        text: 'certified',
+                        style: TextStyle(color: AppTheme.highlightColor),
+                      ),
+                      const TextSpan(text: '.'),
+                    ],
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
               // Subtitle
@@ -174,31 +197,8 @@ class _ParallaxOnboardingScreenState extends State<ParallaxOnboardingScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Icon placeholder
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Icon(
-                  Icons.info_outline,
-                  size: 40,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 40),
               // Title
-              Text(
-                'Screen ${index + 1} Title',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
+              _buildHighlightedTitle(index),
               const SizedBox(height: 20),
               // Description
               Padding(
@@ -220,6 +220,134 @@ class _ParallaxOnboardingScreenState extends State<ParallaxOnboardingScreen> {
         _buildBottomSection(),
       ],
     );
+  }
+
+  Widget _buildHighlightedTitle(int index) {
+    switch (index) {
+      case 1: // Screen 2
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              children: [
+                const TextSpan(text: 'Refresh your '),
+                TextSpan(
+                  text: 'competencies',
+                  style: TextStyle(color: AppTheme.highlightColor),
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+          ),
+        );
+      case 2: // Screen 3
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              children: [
+                const TextSpan(text: 'Access hundreds of '),
+                TextSpan(
+                  text: 'guides',
+                  style: TextStyle(color: AppTheme.highlightColor),
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+          ),
+        );
+      case 3: // Screen 4
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              children: [
+                const TextSpan(text: 'Do a '),
+                TextSpan(
+                  text: 'readiness check',
+                  style: TextStyle(color: AppTheme.highlightColor),
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+          ),
+        );
+      case 4: // Screen 5
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              children: [
+                const TextSpan(text: 'Ace your '),
+                TextSpan(
+                  text: 'workplace assessment',
+                  style: TextStyle(color: AppTheme.highlightColor),
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+          ),
+        );
+      case 5: // Screen 6
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              children: [
+                const TextSpan(text: 'Collate your '),
+                TextSpan(
+                  text: 'results',
+                  style: TextStyle(color: AppTheme.highlightColor),
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+          ),
+        );
+      default:
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Screen ${index + 1} Title',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
+    }
   }
 
   Widget _buildBottomSection() {

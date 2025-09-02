@@ -195,14 +195,18 @@ class _AssessorAssessmentScreenState extends State<AssessorAssessmentScreen> {
               child: Text('Safety - ${p.description}', style: AppTheme.caption),
             ),
           ),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            childAspectRatio: 1.5, // Make buttons square
             children: [
               _markButton(p.id, 'competent', 'Competent', Colors.green, current == 'competent'),
               _markButton(p.id, 'skills_gap', 'Skills gap', Colors.yellow[700]!, current == 'skills_gap'),
-              _markButton(p.id, 'not_yet_competent', 'Not yet competent', Colors.red, current == 'not_yet_competent'),
-              _markButton(p.id, 'knowledge_gap', 'Knowledge gap', Colors.orange, current == 'knowledge_gap'),
+              _markButton(p.id, 'not_yet_competent', 'Not yet\ncompetent', Colors.red, current == 'not_yet_competent'),
+              _markButton(p.id, 'knowledge_gap', 'Knowledge\ngap', Colors.orange, current == 'knowledge_gap'),
             ],
           ),
         ],
@@ -219,15 +223,18 @@ class _AssessorAssessmentScreenState extends State<AssessorAssessmentScreen> {
       onTap: () => setState(() => _marks[pointId] = value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: borderColor, width: 1.5),
         ),
-        child: Text(
-          label,
-          style: GoogleFonts.poppins(color: textColor, fontWeight: FontWeight.w600, fontSize: 12),
+        child: Center(
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(color: textColor, fontWeight: FontWeight.w600, fontSize: 11),
+          ),
         ),
       ),
     );

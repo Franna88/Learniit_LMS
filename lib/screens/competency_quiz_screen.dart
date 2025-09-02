@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import 'quiz_review_answers_screen.dart';
+import 'profile_screen.dart';
 import 'dart:math' as math;
 
 class QuizQuestion {
@@ -108,7 +109,15 @@ class _CompetencyQuizScreenState extends State<CompetencyQuizScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const Icon(Icons.person, color: Colors.white),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.person, color: Colors.white),
+                ),
               ],
             ),
             const SizedBox(height: 6),

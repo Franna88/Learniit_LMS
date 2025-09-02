@@ -8,6 +8,7 @@ import 'main_navigation_screen.dart';
 import 'competency_introduction_screen.dart';
 import 'competency_readiness_screen.dart';
 import 'workplace_assessment_screen.dart';
+import 'profile_screen.dart';
 
 class CompetencyDetailScreen extends StatelessWidget {
   final String category;
@@ -72,6 +73,7 @@ class CompetencyDetailScreen extends StatelessWidget {
                             builder: (context) => GuideDetailScreen(
                               guideTitle: guide['title']!,
                               guideDescription: guide['description']!,
+                              selectedTabIndex: 1, // From competencies tab
                             ),
                           ),
                         );
@@ -208,7 +210,12 @@ class CompetencyDetailScreen extends StatelessWidget {
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                          );
+                        },
                         icon: const Icon(Icons.person, color: Colors.white),
                       ),
                     ],

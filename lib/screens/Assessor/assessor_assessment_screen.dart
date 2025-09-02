@@ -25,6 +25,8 @@ class AssessorAssessmentScreen extends StatefulWidget {
 
 class _AssessorAssessmentScreenState extends State<AssessorAssessmentScreen> {
   final Map<String, String> _marks = {}; // pointId -> status
+  final Map<String, ExpansionTileController> _expansionControllers = {};
+  bool _allExpanded = false;
 
   final List<_AssessmentPoint> _points = const [
     _AssessmentPoint(id: 'p1', index: 1, title: 'Safety first', description: 'Ensure area is safe and PPE applied.'),
@@ -32,6 +34,15 @@ class _AssessorAssessmentScreenState extends State<AssessorAssessmentScreen> {
     _AssessmentPoint(id: 'p3', index: 3, title: 'Assemble equipment', description: 'Assemble regulator and mask as per protocol.'),
     _AssessmentPoint(id: 'p4', index: 4, title: 'Deliver oxygen', description: 'Deliver oxygen and monitor the learner according to protocol.'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize expansion controllers for each assessment point
+    for (final point in _points) {
+      _expansionControllers[point.id] = ExpansionTileController();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +68,8 @@ class _AssessorAssessmentScreenState extends State<AssessorAssessmentScreen> {
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                       style: AppTheme.caption,
                     ),
+                    const SizedBox(height: 12),
+                    _buildExpandAllButton(),
                     const SizedBox(height: 16),
                     Divider(color: Colors.grey[300]),
                     const SizedBox(height: 10),
@@ -172,6 +185,7 @@ class _AssessorAssessmentScreenState extends State<AssessorAssessmentScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       decoration: AppTheme.cardDecoration,
       child: ExpansionTile(
+        controller: _expansionControllers[p.id],
         tilePadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
         leading: Container(
@@ -212,6 +226,52 @@ class _AssessorAssessmentScreenState extends State<AssessorAssessmentScreen> {
         ],
       ),
     );
+  }
+
+  Widget _buildExpandAllButton() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: TextButton.icon(
+        onPressed: _toggleAllExpansion,
+        icon: Icon(
+          _allExpanded ? Icons.unfold_less : Icons.unfold_more,
+          size: 18,
+          color: AppTheme.primaryGradientStart,
+        ),
+        label: Text(
+          _allExpanded ? 'Collapse All' : 'Expand All',
+          style: AppTheme.caption.copyWith(
+            color: AppTheme.primaryGradientStart,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          side: BorderSide(
+            color: AppTheme.primaryGradientStart.withOpacity(0.5),
+            width: 1.5,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _toggleAllExpansion() {
+    setState(() {
+      _allExpanded = !_allExpanded;
+      for (final controller in _expansionControllers.values) {
+        if (_allExpanded) {
+          controller.expand();
+        } else {
+          controller.collapse();
+        }
+      }
+    });
   }
 
   Widget _markButton(String pointId, String value, String label, Color baseColor, bool selected) {

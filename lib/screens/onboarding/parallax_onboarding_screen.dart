@@ -107,31 +107,14 @@ class _ParallaxOnboardingScreenState extends State<ParallaxOnboardingScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo placeholder
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2,
-                    style: BorderStyle.solid,
+              // Logo
+             
+                  Image.asset(
+                    'images/LEARNiiT_logo.png',
+                    fit: BoxFit.cover,
                   ),
-                ),
-                child: const Center(
-                  child: Text(
-                    'LOGO\nPLACEHOLDER',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+                
+              
               const SizedBox(height: 40),
               // Main title
               Padding(

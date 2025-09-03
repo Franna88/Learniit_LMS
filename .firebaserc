@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "learniit-lms"
+  },
+  "targets": {
+    "learniit-lms": {
+      "hosting": {
+        "staging": [
+          "learniit-lms-staging"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

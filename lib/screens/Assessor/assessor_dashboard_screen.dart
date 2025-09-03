@@ -26,97 +26,97 @@ class _AssessorDashboardScreenState extends State<AssessorDashboardScreen> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Top Gradient Header
-            Container(
-              decoration: const BoxDecoration(
-                gradient: AppTheme.mainGradient,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Top Gradient Header
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: AppTheme.mainGradient,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      // Top Row with Menu and Profile
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              // TODO: Implement menu functionality
+                            },
+                            icon: const Icon(
+                              Icons.menu,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProfileScreen(),
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Welcome Message
+                      Text(
+                        'Welcome to the\nAssessor Zone,',
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Bridget',
+                        style: GoogleFonts.poppins(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.highlightColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      // Assessor Stats Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildStatItem('12', 'assessments\npending'),
+                          _buildStatItem('8', 'learners\nready'),
+                          _buildStatItem('5', 'assessments\ncompleted'),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    // Top Row with Menu and Profile
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            // TODO: Implement menu functionality
-                          },
-                          icon: const Icon(
-                            Icons.menu,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ProfileScreen(),
-                              ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 20),
-                    
-                    // Welcome Message
-                    Text(
-                      'Welcome to the\nAssessor Zone,',
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Bridget',
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.highlightColor,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    
-                    const SizedBox(height: 30),
-                    
-                    // Assessor Stats Row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildStatItem('12', 'assessments\npending'),
-                        _buildStatItem('8', 'learners\nready'),
-                        _buildStatItem('5', 'assessments\ncompleted'),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-            
-            // Main Content
-            Expanded(
-              child: SingleChildScrollView(
+
+              // Main Content
+              Container(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,58 +134,72 @@ class _AssessorDashboardScreenState extends State<AssessorDashboardScreen> {
                     const SizedBox(height: 20),
                     
                     // Filter Buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: AppTheme.secondaryButton,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Qualification',
-                                  style: AppTheme.bodyText.copyWith(
-                                    color: AppTheme.primaryGradientStart,
-                                  ),
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        // Calculate responsive padding based on screen width
+                        final screenWidth = MediaQuery.of(context).size.width;
+                        final buttonPadding = screenWidth < 400 ? 8.0 : 16.0;
+                        final textStyle = AppTheme.bodyText.copyWith(
+                          color: AppTheme.primaryGradientStart,
+                          fontSize: screenWidth < 400 ? 14 : 16,
+                        );
+
+                        return Row(
+                          children: [
+                            Flexible(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: buttonPadding, vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.secondaryButton,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                const Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: AppTheme.primaryGradientStart,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Qualification',
+                                        style: textStyle,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: AppTheme.primaryGradientStart,
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: AppTheme.secondaryButton,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Category',
-                                  style: AppTheme.bodyText.copyWith(
-                                    color: AppTheme.primaryGradientStart,
-                                  ),
+                            SizedBox(width: screenWidth < 400 ? 8 : 12),
+                            Flexible(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: buttonPadding, vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.secondaryButton,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                const Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: AppTheme.primaryGradientStart,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Category',
+                                        style: textStyle,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: AppTheme.primaryGradientStart,
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
+                          ],
+                        );
+                      },
                     ),
                     
                     const SizedBox(height: 20),
@@ -335,6 +349,8 @@ class _AssessorDashboardScreenState extends State<AssessorDashboardScreen> {
                                 builder: (context) => GuideDetailScreen(
                                   guideTitle: 'Assessment Standards',
                                   guideDescription: 'Comprehensive guide to assessment standards and criteria for evaluating learner competencies.',
+                                  selectedTabIndex: 2, // From guides section
+                                  useAssessorNav: true,
                                 ),
                               ),
                             );
@@ -351,6 +367,8 @@ class _AssessorDashboardScreenState extends State<AssessorDashboardScreen> {
                                 builder: (context) => GuideDetailScreen(
                                   guideTitle: 'Feedback Guidelines',
                                   guideDescription: 'Best practices for providing constructive feedback to learners during assessments.',
+                                  selectedTabIndex: 2, // From guides section
+                                  useAssessorNav: true,
                                 ),
                               ),
                             );
@@ -367,6 +385,8 @@ class _AssessorDashboardScreenState extends State<AssessorDashboardScreen> {
                                 builder: (context) => GuideDetailScreen(
                                   guideTitle: 'Documentation',
                                   guideDescription: 'Guidelines for proper assessment documentation and record keeping.',
+                                  selectedTabIndex: 2, // From guides section
+                                  useAssessorNav: true,
                                 ),
                               ),
                             );
@@ -383,6 +403,8 @@ class _AssessorDashboardScreenState extends State<AssessorDashboardScreen> {
                                 builder: (context) => GuideDetailScreen(
                                   guideTitle: 'Safety Protocols',
                                   guideDescription: 'Safety protocols and procedures to follow during practical assessments.',
+                                  selectedTabIndex: 2, // From guides section
+                                  useAssessorNav: true,
                                 ),
                               ),
                             );
@@ -393,8 +415,8 @@ class _AssessorDashboardScreenState extends State<AssessorDashboardScreen> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: _AssessorBottomBar(

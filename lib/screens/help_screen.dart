@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../theme/app_theme.dart';
 import 'glossary_screen.dart';
+import 'profile_screen.dart';
 
 class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});
@@ -54,17 +54,27 @@ class _HelpScreenState extends State<HelpScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Icon(
-                    Icons.person,
-                    color: Color(0xFF0D2A4C),
-                    size: 24,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: Color(0xFF0D2A4C),
+                      size: 24,
+                    ),
                   ),
                 ),
               ],
@@ -286,7 +296,9 @@ class _HelpScreenState extends State<HelpScreen> {
 
   Widget _buildHowToUseModal() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.8,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8,
+      ),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -295,6 +307,7 @@ class _HelpScreenState extends State<HelpScreen> {
         ),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           // Handle bar
           Container(
@@ -306,41 +319,43 @@ class _HelpScreenState extends State<HelpScreen> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'How to use Logit LMS',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0D2A4C),
+          Flexible(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'How to use Logit LMS',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0D2A4C),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                _buildInstructionItem(
-                  '1. Navigate using the bottom bar',
-                  'Use the icons at the bottom to switch between different sections of the app.',
-                  Icons.space_bar,
-                ),
-                _buildInstructionItem(
-                  '2. Start learning',
-                  'Go to Competencies to begin your learning journey.',
-                  Icons.school,
-                ),
-                _buildInstructionItem(
-                  '3. Review guides',
-                  'Access helpful guides in the Guides section.',
-                  Icons.menu_book,
-                ),
-                _buildInstructionItem(
-                  '4. Track progress',
-                  'Check your results and progress in the Results tab.',
-                  Icons.assessment,
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  _buildInstructionItem(
+                    '1. Navigate using the bottom bar',
+                    'Use the icons at the bottom to switch between different sections of the app.',
+                    Icons.space_bar,
+                  ),
+                  _buildInstructionItem(
+                    '2. Start learning',
+                    'Go to Competencies to begin your learning journey.',
+                    Icons.school,
+                  ),
+                  _buildInstructionItem(
+                    '3. Review guides',
+                    'Access helpful guides in the Guides section.',
+                    Icons.menu_book,
+                  ),
+                  _buildInstructionItem(
+                    '4. Track progress',
+                    'Check your results and progress in the Results tab.',
+                    Icons.assessment,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -352,7 +367,9 @@ class _HelpScreenState extends State<HelpScreen> {
 
   Widget _buildReportProblemModal() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.8,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8,
+      ),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -361,6 +378,7 @@ class _HelpScreenState extends State<HelpScreen> {
         ),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             margin: const EdgeInsets.only(top: 12),
@@ -371,39 +389,41 @@ class _HelpScreenState extends State<HelpScreen> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Report a Problem',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0D2A4C),
+          Flexible(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Report a Problem',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0D2A4C),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'If you\'re experiencing issues with the app, please contact our support team:',
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 20),
-                _buildContactOption(
-                  Icons.email,
-                  'Email Support',
-                  'support@logitlms.com',
-                  () => _openSupportEmail(),
-                ),
-                const SizedBox(height: 16),
-                _buildContactOption(
-                  Icons.phone,
-                  'Phone Support',
-                  '+1 (555) 123-4567',
-                  () => _openPhoneSupport(),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  const Text(
+                    'If you\'re experiencing issues with the app, please contact our support team:',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildContactOption(
+                    Icons.email,
+                    'Email Support',
+                    'support@logitlms.com',
+                    () => _openSupportEmail(),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildContactOption(
+                    Icons.phone,
+                    'Phone Support',
+                    '+1 (555) 123-4567',
+                    () => _openPhoneSupport(),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

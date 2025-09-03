@@ -2,15 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import 'profile_screen.dart';
+import '../widgets/bottom_navigation.dart';
+import 'main_navigation_screen.dart';
+import 'Assessor/assessor_dashboard_screen.dart';
+import 'Assessor/assessor_assessment_list_screen.dart';
+import 'Assessor/assessor_competencies_screen.dart';
+import 'Assessor/assessor_help_screen.dart';
+import 'guides_screen.dart';
 
 class GuideDetailScreen extends StatefulWidget {
   final String guideTitle;
   final String guideDescription;
+  final int selectedTabIndex;
+  final bool useAssessorNav;
 
   const GuideDetailScreen({
     super.key,
     required this.guideTitle,
     required this.guideDescription,
+    this.selectedTabIndex = 2, // Default to guides tab (index 2)
+    this.useAssessorNav = false, // Default to learner navigation
   });
 
   @override
@@ -266,7 +277,61 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigation(),
+      bottomNavigationBar: widget.useAssessorNav
+          ? _AssessorBottomBar(
+              selectedIndex: widget.selectedTabIndex,
+              onItemTapped: (index) {
+                if (index == widget.selectedTabIndex) {
+                  return;
+                }
+                switch (index) {
+                  case 0:
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AssessorDashboardScreen()),
+                    );
+                    break;
+                  case 1:
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AssessorAssessmentListScreen()),
+                    );
+                    break;
+                  case 2:
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const GuidesScreen(useAssessorNav: true)),
+                    );
+                    break;
+                  case 3:
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AssessorCompetenciesScreen()),
+                    );
+                    break;
+                  case 4:
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AssessorHelpScreen()),
+                    );
+                    break;
+                }
+              },
+            )
+          : BottomNavigation(
+              selectedIndex: widget.selectedTabIndex,
+              onItemTapped: (index) {
+                if (index == widget.selectedTabIndex) {
+                  return;
+                }
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainNavigationScreen(initialIndex: index),
+                  ),
+                );
+              },
+            ),
     );
   }
 
@@ -354,8 +419,19 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
       ),
     );
   }
+}
 
-  Widget _buildBottomNavigation() {
+class _AssessorBottomBar extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onItemTapped;
+
+  const _AssessorBottomBar({
+    required this.selectedIndex,
+    required this.onItemTapped,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: AppTheme.mainGradient,
@@ -363,58 +439,51 @@ class _GuideDetailScreenState extends State<GuideDetailScreen> {
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
-            offset: const Offset(0, -4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            // Previous button
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: AppTheme.primaryGradientStart,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                onPressed: () {
-                  // TODO: Navigate to previous step
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Previous step')),
-                  );
-                },
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
+            _buildNavItem(0, Icons.lightbulb, 'Dashboard'),
+            _buildNavItem(1, Icons.edit, 'Assess'),
+            _buildNavItem(2, Icons.menu_book, 'Guides'),
+            _buildNavItem(3, Icons.my_location, 'Competencies'),
+            _buildNavItem(4, Icons.help, 'Help'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    final bool isSelected = selectedIndex == index;
+    return GestureDetector(
+      onTap: () => onItemTapped(index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.white.withOpacity(0.2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isSelected ? AppTheme.highlightColor : Colors.white,
+              size: 20,
             ),
-            
-            // Next button
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: AppTheme.primaryGradientStart,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                onPressed: () {
-                  // TODO: Navigate to next step
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Next step')),
-                  );
-                },
-                icon: const Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                  size: 20,
-                ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? AppTheme.highlightColor : Colors.white70,
+                fontSize: 8,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
           ],

@@ -297,6 +297,8 @@ class _GuidesScreenState extends State<GuidesScreen> {
                                   builder: (context) => GuideDetailScreen(
                                     guideTitle: guide['title'],
                                     guideDescription: guide['description'],
+                                    selectedTabIndex: 2, // From guides tab
+                                    useAssessorNav: widget.useAssessorNav,
                                   ),
                                 ),
                               );

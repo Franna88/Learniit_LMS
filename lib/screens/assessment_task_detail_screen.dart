@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import 'profile_screen.dart';
 
 class AssessmentTaskDetailScreen extends StatelessWidget {
   final String assessmentTitle;
@@ -60,8 +61,17 @@ class AssessmentTaskDetailScreen extends StatelessWidget {
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
-                const SizedBox(width: 48),
-                const SizedBox(width: 48),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.person, color: Colors.white),
+                ),
               ],
             ),
           ),

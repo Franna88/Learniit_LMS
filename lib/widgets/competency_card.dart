@@ -25,7 +25,10 @@ class CompetencyCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 120,
+        constraints: const BoxConstraints(
+          minHeight: 100,
+          maxHeight: 140,
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
@@ -80,6 +83,8 @@ class CompetencyCard extends StatelessWidget {
                               color: Colors.white.withOpacity(0.8),
                               fontSize: 12,
                             ),
+                            maxLines: 2,
+                            overflow: TextOverflow.visible,
                           ),
                           const SizedBox(height: 4),
                           Text(
@@ -89,6 +94,8 @@ class CompetencyCard extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),
+                            maxLines: 3,
+                            overflow: TextOverflow.visible,
                           ),
                         ],
                       ),
@@ -111,11 +118,15 @@ class CompetencyCard extends StatelessWidget {
                                 color: Colors.white.withOpacity(0.8),
                               ),
                               const SizedBox(width: 4),
-                              Text(
-                                dueDateLabel,
-                                style: AppTheme.caption.copyWith(
-                                  fontSize: 10,
-                                  color: Colors.white.withOpacity(0.8),
+                              Flexible(
+                                child: Text(
+                                  dueDateLabel,
+                                  style: AppTheme.caption.copyWith(
+                                    fontSize: 10,
+                                    color: Colors.white.withOpacity(0.8),
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.visible,
                                 ),
                               ),
                             ],

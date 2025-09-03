@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'profile_screen.dart';
 
 class GlossaryScreen extends StatefulWidget {
   const GlossaryScreen({super.key});
@@ -167,17 +168,27 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                     size: 24,
                   ),
                 ),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Icon(
-                    Icons.person,
-                    color: Color(0xFF0D2A4C),
-                    size: 24,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: Color(0xFF0D2A4C),
+                      size: 24,
+                    ),
                   ),
                 ),
               ],

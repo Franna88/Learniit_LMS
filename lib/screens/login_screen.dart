@@ -60,10 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.water,
-                        size: 64,
-                        color: Colors.white,
+                      Container(
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: Image.asset(
+                          'images/LEARNiiT_logo.png',
+                          height: 64,
+                         // width: 64,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Text(

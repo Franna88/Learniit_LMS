@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'assessment_task_detail_screen.dart';
+import 'profile_screen.dart';
 
 class AssessmentDetailScreen extends StatelessWidget {
   final String assessmentTitle;
@@ -29,11 +30,11 @@ class AssessmentDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(context),
-            Expanded(
-              child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildHeader(context),
+              Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,9 +45,9 @@ class AssessmentDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-                         _buildFooter(context),
-          ],
+              _buildFooter(context),
+            ],
+          ),
         ),
       ),
     );
@@ -75,7 +76,12 @@ class AssessmentDetailScreen extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    // TODO: Navigate to profile
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.person, color: Colors.white),
                 ),

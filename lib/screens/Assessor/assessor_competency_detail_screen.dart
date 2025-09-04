@@ -10,6 +10,7 @@ import 'assessor_competencies_screen.dart';
 import 'assessor_competency_introduction_screen.dart';
 import 'assessor_competency_readiness_screen.dart';
 import 'assessor_workplace_assessment_screen.dart';
+import '../profile_screen.dart';
 
 class AssessorCompetencyDetailScreen extends StatelessWidget {
   final String category;
@@ -233,7 +234,12 @@ class AssessorCompetencyDetailScreen extends StatelessWidget {
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                          );
+                        },
                         icon: const Icon(Icons.person, color: Colors.white),
                       ),
                     ],
@@ -257,11 +263,7 @@ class AssessorCompetencyDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      _buildProgressIndicator(progressPercent),
-                    ],
-                  ),
+                  _buildProgressIndicator(progressPercent),
                 ],
               ),
             ),
@@ -272,37 +274,38 @@ class AssessorCompetencyDetailScreen extends StatelessWidget {
   }
 
   Widget _buildProgressIndicator(int percent) {
-    return Row(
-      children: [
-        Container(
-          width: 60,
-          child: Container(
-            height: 8,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final width = constraints.maxWidth * (percent / 100);
-                return Stack(
-                  children: [
-                    Container(
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: AppTheme.highlightColor,
-                        borderRadius: BorderRadius.circular(8),
+    return Expanded(
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: 8,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final width = constraints.maxWidth * (percent / 100);
+                  return Stack(
+                    children: [
+                      Container(
+                        width: width,
+                        decoration: BoxDecoration(
+                          color: AppTheme.highlightColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 8),
-        Text('$percent%', style: const TextStyle(color: Colors.white, fontSize: 12)),
-      ],
+          const SizedBox(width: 8),
+          Text('$percent%', style: const TextStyle(color: Colors.white, fontSize: 12)),
+        ],
+      ),
     );
   }
 }

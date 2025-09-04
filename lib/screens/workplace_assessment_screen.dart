@@ -191,6 +191,7 @@ class _WorkplaceAssessmentScreenState extends State<WorkplaceAssessmentScreen> {
                                   guideTitle: widget.competencyTitle,
                                   guideDescription:
                                       'Use this practical skill sheet to ensure you are well prepared and can carry out all the steps safely.',
+                                  selectedTabIndex: 3, // From assessments tab
                                 ),
                               ),
                             );
@@ -244,103 +245,109 @@ class _WorkplaceAssessmentScreenState extends State<WorkplaceAssessmentScreen> {
       height: height,
       decoration: AppTheme.cardDecoration,
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16), // Reduced padding for smaller screens
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 520),
             child: Builder(builder: (context) {
-              final double titleSize = math.max(18, math.min(22, height * 0.036));
-              final double bodySize = math.max(12, math.min(16, height * 0.028));
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(color: AppTheme.secondaryButton, borderRadius: BorderRadius.circular(12)),
-                    child: Stack(children: [
-                      Positioned(
-                        top: 4,
-                        left: 4,
-                        right: 4,
-                        child: Container(height: 8, decoration: BoxDecoration(color: AppTheme.highlightColor, borderRadius: BorderRadius.circular(4))),
+              final double titleSize = math.max(16, math.min(20, height * 0.032)); // Slightly smaller title
+              final double bodySize = math.max(11, math.min(15, height * 0.026)); // Slightly smaller body text
+              return SingleChildScrollView( // Added scroll view to handle overflow
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: math.min(56, height * 0.12), // Responsive icon size
+                        height: math.min(56, height * 0.12),
+                        decoration: BoxDecoration(color: AppTheme.secondaryButton, borderRadius: BorderRadius.circular(12)),
+                        child: Stack(children: [
+                          Positioned(
+                            top: 4,
+                            left: 4,
+                            right: 4,
+                            child: Container(height: 8, decoration: BoxDecoration(color: AppTheme.highlightColor, borderRadius: BorderRadius.circular(4))),
+                          ),
+                          const Center(child: Icon(Icons.assignment, color: AppTheme.primaryGradientStart)),
+                        ]),
                       ),
-                      const Center(child: Icon(Icons.assignment, color: AppTheme.primaryGradientStart)),
-                    ]),
-                  ),
-                  const SizedBox(height: 16),
-                  Text('Book your assessment', style: GoogleFonts.poppins(fontSize: titleSize, fontWeight: FontWeight.w700, color: AppTheme.primaryGradientStart)),
-                  const SizedBox(height: 8),
-                  Text(
-                    'When you are confident in the steps and have passed the readiness check, speak to a supervisor or approved assessor to schedule your workplace assessment.\n\nAfter your assessment, return here to view your results and upload your evidence.',
-                    style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart.withOpacity(0.85)),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey[300]!)),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Qualified assessors:', style: GoogleFonts.poppins(fontSize: bodySize, fontWeight: FontWeight.w600, color: AppTheme.primaryGradientStart)),
-                        ),
-                        const SizedBox(height: 8),
-                        LayoutBuilder(
-                          builder: (context, cons) {
-                            final bool stack = cons.maxWidth < 360;
-                            final Widget left = Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('• Michael McDiver', style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart)),
-                                Text('mcdiver@email.com', style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart, decoration: TextDecoration.underline)),
-                              ],
-                            );
-                            final Widget right = Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('• John Supervisor', style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart)),
-                                Text('johnsups@email.com', style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart, decoration: TextDecoration.underline)),
-                              ],
-                            );
-                            if (stack) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  left,
-                                  const SizedBox(height: 8),
-                                  right,
-                                ],
-                              );
-                            }
-                            return Row(
-                              children: [
-                                Expanded(child: left),
-                                const SizedBox(width: 16),
-                                Expanded(child: right),
-                              ],
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => setState(() => _stepIndex = 2),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryGradientStart,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                      const SizedBox(height: 12), // Reduced spacing
+                      Text('Book your assessment', style: GoogleFonts.poppins(fontSize: titleSize, fontWeight: FontWeight.w700, color: AppTheme.primaryGradientStart)),
+                      const SizedBox(height: 6), // Reduced spacing
+                      Text(
+                        'When you are confident in the steps and have passed the readiness check, speak to a supervisor or approved assessor to schedule your workplace assessment.\n\nAfter your assessment, return here to view your results and upload your evidence.',
+                        style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart.withOpacity(0.85)),
+                        textAlign: TextAlign.center,
                       ),
-                      child: const Text('Continue >'),
-                    ),
+                      const SizedBox(height: 12), // Reduced spacing
+                      Container(
+                        padding: const EdgeInsets.all(10), // Reduced padding
+                        decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey[300]!)),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text('Qualified assessors:', style: GoogleFonts.poppins(fontSize: bodySize, fontWeight: FontWeight.w600, color: AppTheme.primaryGradientStart)),
+                            ),
+                            const SizedBox(height: 6), // Reduced spacing
+                            LayoutBuilder(
+                              builder: (context, cons) {
+                                final bool stack = cons.maxWidth < 360;
+                                final Widget left = Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('• Michael McDiver', style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart)),
+                                    Text('mcdiver@email.com', style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart, decoration: TextDecoration.underline)),
+                                  ],
+                                );
+                                final Widget right = Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('• John Supervisor', style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart)),
+                                    Text('johnsups@email.com', style: GoogleFonts.poppins(fontSize: bodySize, color: AppTheme.primaryGradientStart, decoration: TextDecoration.underline)),
+                                  ],
+                                );
+                                if (stack) {
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      left,
+                                      const SizedBox(height: 6), // Reduced spacing
+                                      right,
+                                    ],
+                                  );
+                                }
+                                return Row(
+                                  children: [
+                                    Expanded(child: left),
+                                    const SizedBox(width: 12), // Reduced spacing
+                                    Expanded(child: right),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16), // Reduced spacing
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => setState(() => _stepIndex = 2),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.primaryGradientStart,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12), // Reduced padding
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                          ),
+                          child: const Text('Continue >'),
+                        ),
+                      ),
+                      const SizedBox(height: 8), // Add bottom padding
+                    ],
                   ),
-                ],
+                ),
               );
             }),
           ),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bottom_navigation.dart';
 import 'main_navigation_screen.dart';
+import 'profile_screen.dart';
 
 class CompetencyIntroductionScreen extends StatefulWidget {
   final String competencyTitle;
@@ -129,7 +130,15 @@ class _CompetencyIntroductionScreenState extends State<CompetencyIntroductionScr
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () => Navigator.pop(context),
                 ),
-                const Icon(Icons.person, color: Colors.white),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.person, color: Colors.white),
+                ),
               ],
             ),
             const SizedBox(height: 6),

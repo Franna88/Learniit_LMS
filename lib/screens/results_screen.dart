@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'assessment_detail_screen.dart';
+import 'profile_screen.dart';
 
 class ResultsScreen extends StatefulWidget {
   const ResultsScreen({super.key});
@@ -87,7 +88,12 @@ class _ResultsScreenState extends State<ResultsScreen> {
               const Spacer(),
               IconButton(
                 onPressed: () {
-                  // TODO: Navigate to profile
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfileScreen(),
+                    ),
+                  );
                 },
                 icon: const Icon(Icons.person, color: Colors.white),
               ),
@@ -285,82 +291,179 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Column(
-                            children: [
-                                                              SizedBox(
-                                  width: 140,
-                                  child: ElevatedButton.icon(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AssessmentDetailScreen(
-                                            assessmentTitle: result.title,
-                                            assessor: 'Michael McDiver',
-                                            learner: 'Jane Diver',
-                                            dateAssessed: '15/12/2024',
-                                            nextRefresherDue: '15/12/2025',
-                                            grade: result.grade,
-                                            overallScore: result.score,
-                                            assessmentItems: [
-                                              AssessmentItem(
-                                                name: 'Administration of oxygen',
-                                                score: 95,
-                                                grade: 'Competent',
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final screenWidth = MediaQuery.of(context).size.width;
+                          final isSmallScreen = screenWidth < 480; // Adjust breakpoint as needed
+
+                          if (isSmallScreen) {
+                            // Stack vertically on small screens
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Flexible(
+                                      child: SizedBox(
+                                        width: 120,
+                                        child: ElevatedButton.icon(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => AssessmentDetailScreen(
+                                                  assessmentTitle: result.title,
+                                                  assessor: 'Michael McDiver',
+                                                  learner: 'Jane Diver',
+                                                  dateAssessed: '15/12/2024',
+                                                  nextRefresherDue: '15/12/2025',
+                                                  grade: result.grade,
+                                                  overallScore: result.score,
+                                                  assessmentItems: [
+                                                    AssessmentItem(
+                                                      name: 'Administration of oxygen',
+                                                      score: 95,
+                                                      grade: 'Competent',
+                                                    ),
+                                                    AssessmentItem(
+                                                      name: 'Identify the pillar valve and pressure regulator',
+                                                      score: 95,
+                                                      grade: 'Competent',
+                                                    ),
+                                                    AssessmentItem(
+                                                      name: 'Selection of oxygen delivery device',
+                                                      score: 95,
+                                                      grade: 'Competent',
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                              AssessmentItem(
-                                                name: 'Identify the pillar valve and pressure regulator',
-                                                score: 95,
-                                                grade: 'Competent',
-                                              ),
-                                              AssessmentItem(
-                                                name: 'Selection of oxygen delivery device',
-                                                score: 95,
-                                                grade: 'Competent',
-                                              ),
-                                            ],
+                                            );
+                                          },
+                                          icon: const Icon(Icons.info_outline, size: 14),
+                                          label: const Text('Learn more >', style: TextStyle(fontSize: 12)),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: AppTheme.primaryGradientStart,
+                                            foregroundColor: Colors.white,
+                                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
                                           ),
                                         ),
-                                      );
-                                    },
-                                  icon: const Icon(Icons.info_outline, size: 14),
-                                  label: const Text('Learn more >', style: TextStyle(fontSize: 12)),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppTheme.primaryGradientStart,
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              SizedBox(
-                                width: 140,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    // TODO: Download result
-                                  },
-                                  icon: const Icon(Icons.download, size: 14),
-                                  label: const Text('Download', style: TextStyle(fontSize: 12)),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppTheme.primaryGradientStart,
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                                    const SizedBox(width: 16),
+                                    Flexible(
+                                      child: SizedBox(
+                                        width: 120,
+                                        child: ElevatedButton.icon(
+                                          onPressed: () {
+                                            // TODO: Download result
+                                          },
+                                          icon: const Icon(Icons.download, size: 14),
+                                          label: const Text('Download', style: TextStyle(fontSize: 12)),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: AppTheme.primaryGradientStart,
+                                            foregroundColor: Colors.white,
+                                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 40),
-                          _buildProgressBar(result.score),
-                        ],
+                                const SizedBox(height: 20),
+                                Center(
+                                  child: _buildProgressBar(result.score),
+                                ),
+                              ],
+                            );
+                          } else {
+                            // Original horizontal layout for larger screens
+                            return Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      width: 140,
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => AssessmentDetailScreen(
+                                                assessmentTitle: result.title,
+                                                assessor: 'Michael McDiver',
+                                                learner: 'Jane Diver',
+                                                dateAssessed: '15/12/2024',
+                                                nextRefresherDue: '15/12/2025',
+                                                grade: result.grade,
+                                                overallScore: result.score,
+                                                assessmentItems: [
+                                                  AssessmentItem(
+                                                    name: 'Administration of oxygen',
+                                                    score: 95,
+                                                    grade: 'Competent',
+                                                  ),
+                                                  AssessmentItem(
+                                                    name: 'Identify the pillar valve and pressure regulator',
+                                                    score: 95,
+                                                    grade: 'Competent',
+                                                  ),
+                                                  AssessmentItem(
+                                                    name: 'Selection of oxygen delivery device',
+                                                    score: 95,
+                                                    grade: 'Competent',
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        icon: const Icon(Icons.info_outline, size: 14),
+                                        label: const Text('Learn more >', style: TextStyle(fontSize: 12)),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppTheme.primaryGradientStart,
+                                          foregroundColor: Colors.white,
+                                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    SizedBox(
+                                      width: 140,
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          // TODO: Download result
+                                        },
+                                        icon: const Icon(Icons.download, size: 14),
+                                        label: const Text('Download', style: TextStyle(fontSize: 12)),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppTheme.primaryGradientStart,
+                                          foregroundColor: Colors.white,
+                                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 40),
+                                _buildProgressBar(result.score),
+                              ],
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),

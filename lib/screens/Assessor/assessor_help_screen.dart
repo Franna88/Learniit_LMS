@@ -6,6 +6,7 @@ import '../guides_screen.dart';
 import 'assessor_competencies_screen.dart';
 import 'assessor_assessment_list_screen.dart';
 import '../glossary_screen.dart';
+import '../profile_screen.dart';
 
 class AssessorHelpScreen extends StatefulWidget {
   const AssessorHelpScreen({super.key});
@@ -94,17 +95,25 @@ class _AssessorHelpScreenState extends State<AssessorHelpScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Icon(
-                    Icons.person,
-                    color: Color(0xFF0D2A4C),
-                    size: 24,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                    );
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: Color(0xFF0D2A4C),
+                      size: 24,
+                    ),
                   ),
                 ),
               ],
@@ -346,41 +355,45 @@ class _AssessorHelpScreenState extends State<AssessorHelpScreen> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'How to use Logit LMS',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0D2A4C),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Text(
+              'How to use Logit LMS',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF0D2A4C),
+              ),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildInstructionItem(
+                    '1. Navigate using the bottom bar',
+                    'Use the icons at the bottom to switch between different sections of the app.',
+                    Icons.space_bar,
                   ),
-                ),
-                const SizedBox(height: 20),
-                _buildInstructionItem(
-                  '1. Navigate using the bottom bar',
-                  'Use the icons at the bottom to switch between different sections of the app.',
-                  Icons.space_bar,
-                ),
-                _buildInstructionItem(
-                  '2. Start learning',
-                  'Go to Competencies to begin your learning journey.',
-                  Icons.school,
-                ),
-                _buildInstructionItem(
-                  '3. Review guides',
-                  'Access helpful guides in the Guides section.',
-                  Icons.menu_book,
-                ),
-                _buildInstructionItem(
-                  '4. Track progress',
-                  'Check your results and progress in the Results tab.',
-                  Icons.assessment,
-                ),
-              ],
+                  _buildInstructionItem(
+                    '2. Start learning',
+                    'Go to Competencies to begin your learning journey.',
+                    Icons.school,
+                  ),
+                  _buildInstructionItem(
+                    '3. Review guides',
+                    'Access helpful guides in the Guides section.',
+                    Icons.menu_book,
+                  ),
+                  _buildInstructionItem(
+                    '4. Track progress',
+                    'Check your results and progress in the Results tab.',
+                    Icons.assessment,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -409,39 +422,43 @@ class _AssessorHelpScreenState extends State<AssessorHelpScreen> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Report a Problem',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0D2A4C),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Text(
+              'Report a Problem',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF0D2A4C),
+              ),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'If you\'re experiencing issues with the app, please contact our support team:',
+                    style: TextStyle(fontSize: 16),
                   ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'If you\'re experiencing issues with the app, please contact our support team:',
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 20),
-                _buildContactOption(
-                  Icons.email,
-                  'Email Support',
-                  'support@logitlms.com',
-                  () => _openSupportEmail(),
-                ),
-                const SizedBox(height: 16),
-                _buildContactOption(
-                  Icons.phone,
-                  'Phone Support',
-                  '+1 (555) 123-4567',
-                  () => _openPhoneSupport(),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  _buildContactOption(
+                    Icons.email,
+                    'Email Support',
+                    'support@logitlms.com',
+                    () => _openSupportEmail(),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildContactOption(
+                    Icons.phone,
+                    'Phone Support',
+                    '+1 (555) 123-4567',
+                    () => _openPhoneSupport(),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

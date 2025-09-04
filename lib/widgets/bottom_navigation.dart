@@ -13,6 +13,11 @@ class BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width for responsive design
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isVerySmallScreen = screenWidth < 320; // Very small phones
+    final isSmallScreen = screenWidth < 360; // Small phones like iPhone SE
+
     return Container(
       decoration: BoxDecoration(
         gradient: AppTheme.mainGradient,
@@ -25,50 +30,59 @@ class BottomNavigation extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        padding: EdgeInsets.symmetric(
+          horizontal: isVerySmallScreen ? 2 : (isSmallScreen ? 4 : 8),
+          vertical: 12
+        ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildNavItem(0, Icons.lightbulb, 'Learning Zone'),
-            _buildNavItem(1, Icons.my_location, 'Competencies'),
-            _buildNavItem(2, Icons.book, 'Guides'),
-            _buildNavItem(3, Icons.assignment, 'Results'),
-            _buildNavItem(4, Icons.help, 'Help'),
+            Flexible(
+              flex: 1,
+              child: _buildNavItem(0, Icons.lightbulb, screenWidth),
+            ),
+            Flexible(
+              flex: 1,
+              child: _buildNavItem(1, Icons.my_location, screenWidth),
+            ),
+            Flexible(
+              flex: 1,
+              child: _buildNavItem(2, Icons.book, screenWidth),
+            ),
+            Flexible(
+              flex: 1,
+              child: _buildNavItem(3, Icons.assignment, screenWidth),
+            ),
+            Flexible(
+              flex: 1,
+              child: _buildNavItem(4, Icons.help, screenWidth),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
+  Widget _buildNavItem(int index, IconData icon, double screenWidth) {
     final isSelected = selectedIndex == index;
-    
+    final isVerySmallScreen = screenWidth < 320;
+    final isSmallScreen = screenWidth < 360;
+
     return GestureDetector(
       onTap: () => onItemTapped(index),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: EdgeInsets.symmetric(
+          horizontal: isVerySmallScreen ? 4 : (isSmallScreen ? 6 : 12),
+          vertical: 8
+        ),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white.withOpacity(0.2) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? AppTheme.highlightColor : Colors.white,
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? AppTheme.highlightColor : Colors.white70,
-                fontSize: 10,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-              ),
-            ),
-          ],
+        child: Icon(
+          icon,
+          color: isSelected ? AppTheme.highlightColor : Colors.white,
+          size: isVerySmallScreen ? 18 : (isSmallScreen ? 20 : 24),
         ),
       ),
     );

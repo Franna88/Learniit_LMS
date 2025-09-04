@@ -4,6 +4,7 @@ import '../theme/app_theme.dart';
 import '../widgets/bottom_navigation.dart';
 import 'main_navigation_screen.dart';
 import 'competency_quiz_screen.dart';
+import 'profile_screen.dart';
 
 class CompetencyReadinessScreen extends StatefulWidget {
   final String competencyTitle;
@@ -101,7 +102,15 @@ class _CompetencyReadinessScreenState extends State<CompetencyReadinessScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const Icon(Icons.person, color: Colors.white),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.person, color: Colors.white),
+                ),
               ],
             ),
             const SizedBox(height: 6),

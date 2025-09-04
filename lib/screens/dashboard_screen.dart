@@ -18,100 +18,106 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for responsive design
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Calculate responsive values
+    final isSmallScreen = screenHeight < 700;
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Top Gradient Header
-            Container(
-              decoration: const BoxDecoration(
-                gradient: AppTheme.mainGradient,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Top Gradient Header - Now Scrollable
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: AppTheme.mainGradient,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(isSmallScreen ? 16.0 : 20.0),
+                  child: Column(
+                    children: [
+                      // Top Row with Menu and Profile
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              // TODO: Implement menu functionality
+                            },
+                            icon: const Icon(
+                              Icons.menu,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProfileScreen(),
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Welcome Message
+                      Text(
+                        'Welcome to the\nLearning Zone,',
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Bridget',
+                        style: GoogleFonts.poppins(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.highlightColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      // User Stats Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildStatItem('40', 'competencies\nearned'),
+                          _buildStatItem('23', 'competencies\noutstanding'),
+                          _buildStatItem('12', 'assessments\ndue soon'),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    // Top Row with Menu and Profile
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            // TODO: Implement menu functionality
-                          },
-                          icon: const Icon(
-                            Icons.menu,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ProfileScreen(),
-                              ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 20),
-                    
-                    // Welcome Message
-                    Text(
-                      'Welcome to the\nLearning Zone,',
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Bridget',
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.highlightColor,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    
-                    const SizedBox(height: 30),
-                    
-                    // User Stats Row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildStatItem('40', 'competencies\nearned'),
-                        _buildStatItem('23', 'competencies\noutstanding'),
-                        _buildStatItem('12', 'assessments\ndue soon'),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-            
-            // Main Content
-            Expanded(
-              child: SingleChildScrollView(
+
+              // Main Content - Now part of the scrollable area
+              Container(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,10 +147,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Qualification',
-                                  style: AppTheme.bodyText.copyWith(
-                                    color: AppTheme.primaryGradientStart,
+                                Expanded(
+                                  child: Text(
+                                    'Qualification',
+                                    style: AppTheme.bodyText.copyWith(
+                                      color: AppTheme.primaryGradientStart,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 const Icon(
@@ -166,10 +175,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Category',
-                                  style: AppTheme.bodyText.copyWith(
-                                    color: AppTheme.primaryGradientStart,
+                                Expanded(
+                                  child: Text(
+                                    'Category',
+                                    style: AppTheme.bodyText.copyWith(
+                                      color: AppTheme.primaryGradientStart,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 const Icon(
@@ -243,10 +255,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Qualification',
-                                  style: AppTheme.bodyText.copyWith(
-                                    color: AppTheme.primaryGradientStart,
+                                Expanded(
+                                  child: Text(
+                                    'Qualification',
+                                    style: AppTheme.bodyText.copyWith(
+                                      color: AppTheme.primaryGradientStart,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 const Icon(
@@ -268,10 +283,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Category',
-                                  style: AppTheme.bodyText.copyWith(
-                                    color: AppTheme.primaryGradientStart,
+                                Expanded(
+                                  child: Text(
+                                    'Category',
+                                    style: AppTheme.bodyText.copyWith(
+                                      color: AppTheme.primaryGradientStart,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 const Icon(
@@ -309,7 +327,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         );
                       },
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: isSmallScreen ? 12 : 16),
                     _buildCompetencyCard(
                       'Clinical procedures',
                       'Drug administration',
@@ -384,6 +402,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 builder: (context) => GuideDetailScreen(
                                   guideTitle: 'Key Terminology',
                                   guideDescription: _guideDescription('Key Terminology'),
+                                  selectedTabIndex: 2, // From guides section on dashboard
                                 ),
                               ),
                             );
@@ -400,6 +419,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 builder: (context) => GuideDetailScreen(
                                   guideTitle: 'Primary Survey',
                                   guideDescription: _guideDescription('Primary Survey'),
+                                  selectedTabIndex: 2, // From guides section on dashboard
                                 ),
                               ),
                             );
@@ -416,6 +436,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 builder: (context) => GuideDetailScreen(
                                   guideTitle: 'Secondary Survey',
                                   guideDescription: _guideDescription('Secondary Survey'),
+                                  selectedTabIndex: 2, // From guides section on dashboard
                                 ),
                               ),
                             );
@@ -432,6 +453,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 builder: (context) => GuideDetailScreen(
                                   guideTitle: 'Documentation',
                                   guideDescription: _guideDescription('Documentation'),
+                                  selectedTabIndex: 2, // From guides section on dashboard
                                 ),
                               ),
                             );
@@ -442,8 +464,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
 
@@ -476,10 +498,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildCompetencyCard(String category, String title, String dueDate, int progress, String imagePath, {VoidCallback? onTap}) {
+    // Get responsive values from current context
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenHeight < 700;
+    final competencyCardHeight = isSmallScreen ? 120.0 : 140.0;
+    final competencyCardPadding = isSmallScreen ? 12.0 : 16.0;
+    final progressCircleSize = isSmallScreen ? 40.0 : 48.0;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-      height: 120,
+      height: competencyCardHeight,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
@@ -527,7 +556,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
              ),
             // Content
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(competencyCardPadding),
               child: Row(
                 children: [
                   // Left side - Text content
@@ -540,18 +569,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           category,
                           style: AppTheme.caption.copyWith(
                             color: Colors.white.withOpacity(0.8),
-                            fontSize: 12,
+                            fontSize: isSmallScreen ? 10 : 12,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
                         // Title text (larger, bold)
                         Text(
                           title,
                           style: AppTheme.heading3.copyWith(
-                            fontSize: 16,
+                            fontSize: isSmallScreen ? 14 : 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
+                          maxLines: 3,
+                          overflow: TextOverflow.visible,
                         ),
                       ],
                     ),
@@ -580,7 +613,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Text(
                               dueDate,
                               style: AppTheme.caption.copyWith(
-                                fontSize: 10,
+                                fontSize: isSmallScreen ? 9 : 10,
                                 color: Colors.white.withOpacity(0.8),
                               ),
                             ),
@@ -590,13 +623,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: 8),
                                                                     // Half-circle progress bar
                        SizedBox(
-                         width: 48,
-                         height: 48,
+                         width: progressCircleSize,
+                         height: progressCircleSize,
                          child: Stack(
                            children: [
                              // Background half-circle
                              CustomPaint(
-                               size: const Size(48, 48),
+                               size: Size(progressCircleSize, progressCircleSize),
                                painter: HalfCirclePainter(
                                  progress: 1.0,
                                  color: Colors.white.withOpacity(0.2),
@@ -605,7 +638,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                              ),
                              // Progress half-circle
                              CustomPaint(
-                               size: const Size(48, 48),
+                               size: Size(progressCircleSize, progressCircleSize),
                                painter: HalfCirclePainter(
                                  progress: progress / 100,
                                  color: AppTheme.highlightColor,
@@ -617,7 +650,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Text(
                                   '$progress%',
                                   style: GoogleFonts.poppins(
-                                    fontSize: 10,
+                                    fontSize: isSmallScreen ? 9 : 10,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                   ),
